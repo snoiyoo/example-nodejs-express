@@ -27,7 +27,6 @@ jobs:
               docker build -t snoiyoo/example-nodejs-express:${CIRCLE_SHA1} .
               dokcer push  snoiyoo/example-nodejs-express:latest
               docker push  snoiyoo/example-nodejs-express:${CIRCLE_SHA1}
-
       - run: echo Done
            
            
