@@ -27,7 +27,18 @@ jobs:
               docker build -t snoiyoo/example-nodejs-express:${CIRCLE_SHA1} .
               docker push  snoiyoo/example-nodejs-express:latest
               docker push  snoiyoo/example-nodejs-express:${CIRCLE_SHA1}
-      - run: echo Done
+      - run:
+          name: "Call to rancher to deploy"
+          command: |
+              docker run --rm -it \
+                -e CATTLE_ACCESS_KEY="$CATTLE_ACCESS_KEY" \
+                -e CATTLE_SECRET_KEY="$CATTLE_SECRET_KEY" \
+                -e CATTLE_URL="$CATTLE_URL" \
+                etlweather/gaucho upgrade $RANCHER_EXAMPLE_NODEJS \
+                --imageUuid 'docker:snoiyoo/example-nodejs-express:latest' \
+                --batch_size 3 --start_first \
+                --auto_complete --timeout 600 \
+                /
            
            
       
